@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script defer src="scripts/gsap.min.js"></script>
+    <script defer src="scripts/parallax.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новометрика</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700&display=swap" rel="stylesheet">
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        html {
+            font-size: 16px;
+        }
+
+
+        body {
+            padding-top: 14%;
+            position: relative;
+            height: 100vh;
+            font-size: inherit;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .text__h1, .text__h3 {
+            font-family: 'Manrope', sans-serif;
+            margin: 0;
+        }
+
+        .text__h1 {
+            font-size: 3rem;
+            line-height: 4.5rem;
+            margin-bottom: 1rem;
+            color: #3A374F;;
+        }
+
+        .text__h3 {
+            font-size: 1.125rem;
+            line-height: 1.575rem;
+            color: #808E93;
+        }
+
+        .text {
+            text-align: center;
+        }
+
+        .image {
+            position: absolute;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            transition: all 2.5s ease-in-out;
+            filter: blur(3px);
+            overflow: hidden;
+            object-fit: cover;
+        }
+
+        .image__sea, .image__bridge, .image__city {
+            position: absolute;
+            width: 100%;
+            height: auto;
+            left: 0;
+            max-height: 100%;
+            bottom: 130px;
+        }
+
+        .image__city {
+            z-index: -3;
+        }
+
+        .image__bridge {
+            z-index: 1;
+            bottom: 25px;
+        }
+
+        .image__sea {
+            bottom: -50px;
+            z-index: -2;
+        }
+
+        @media screen  and (max-width: 800px) {
+            html {
+                font-size: 12px;
+            }
+            body {
+                padding-top: 34%;
+            }
+            img {
+                max-height: 70vh !important;
+                width: auto !important;
+                transform: translateX(-50%);
+                transition: all 0.1s ease-in-out;
+            }
+            .image__city {
+                bottom: 170px;
+            }
+            .image__bridge{
+                bottom: 0px;
+            }
+            .image__sea {
+                bottom: -50px;
+            }
+            .text{
+                height: 84vh;
+                background-image: linear-gradient(180deg, white, transparent);
+            }
+
+
+        }
+    </style>
+</head>
+
+<body>
+<div class="text">
+    <h1 class="text__h1">Приносим извинения, сайт находится в разработке</h1>
+    <h3 class="text__h3">Пожалуйста, посетите нас позже</h3>
+</div>
+<div class="image">
+    <img class="image__image_lazy image__sea"
+         data-src="images/sea.png"
+         src="images/thumb_sea.png"
+         alt=""
+    >
+    <img class="image__image_lazy image__city"
+         data-src="images/city.png"
+         src="images/thumb_city.png"
+         alt=""
+    >
+    <img class="image__image_lazy image__bridge"
+         data-src="images/bridge.png"
+         src="images/thumb_bridge.png"
+         alt=""
+    >
+
+</div>
+<script>
+    (function () {
+        [...document.querySelectorAll('.image__image_lazy')].map(image => {
+            image.onload = () => {
+                ImagesLoadedCounter.counter++;
+                ImagesLoadedCounter.check();
+            }
+            image.src = image.dataset.src;
+        });
+        const ImagesLoadedCounter = {
+            counter: 0,
+            check: function () {
+                if (this.counter === 3) {
+                    document.querySelector('.image').style.filter = 'none';
+                }
+            }
+
+        }
+
+
+    })()
+    const imageCity = document.querySelector('.image__city');
+    const imageSea = document.querySelector('.image__sea');
+    const imageBridge = document.querySelector('.image__bridge');
+    imageBridge.style.filter = 'blur(0.6px)';
+    function moveTo(element, yPosition, windowHeight, k) {
+        let length = k*(yPosition)/windowHeight*parseInt(getComputedStyle(imageSea).height)/48;
+        console.log(length)
+        element.style.transform = `translateY(${length}px)`
+    }
+    let windowHeight = window.innerHeight;
+    window.addEventListener('mousemove', e=>{
+        let clientY = e.clientY;
+        moveTo(imageBridge, clientY, windowHeight, 2.2)
+        moveTo(imageSea, clientY, windowHeight, 2)
+        moveTo(imageCity, clientY, windowHeight, 1.5)
+    }, true)
+</script>
+</body>
+
+</html>
